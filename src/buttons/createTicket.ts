@@ -8,11 +8,11 @@ import { client } from '../index'
 import { count } from '../managers/count.manager'
 import { addTicket, tickets } from '../managers/ticket.manager'
 import Button from '../structures/Button'
-import { actionRow } from '../utils/discord.util'
+import { actionRow } from '../utils/discord.utils'
 
 export default new Button('create-ticket', async (interaction) => {
   const categoryId = process.env.TICKET_CATEGORY_ID
-  if (categoryId === undefined) {
+  if (!categoryId) {
     throw Error('TICKET_CATEGORY_ID is not defined')
   }
   const userId = interaction.user.id

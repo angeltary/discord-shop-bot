@@ -17,5 +17,5 @@ export const removeReply = async (interaction: ChatInputCommandInteraction) => {
 
 export const extractId = (mention: string) => {
   const match = mention.match(/<@(\d+)>/)
-  return match != null ? match[1] : ''
+  return match !== null ? match[1] : ''
 }

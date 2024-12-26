@@ -6,7 +6,7 @@ import {
   TextChannel
 } from 'discord.js'
 import { SlashCommand } from '../structures/command/SlashCommand'
-import { actionRow, removeReply } from '../utils/discord.util'
+import { actionRow, removeReply } from '../utils/discord.utils'
 
 export default new SlashCommand(
   new SlashCommandBuilder()

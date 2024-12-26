@@ -8,8 +8,7 @@ const createCount = async () => {
 
 export const loadCount = async () => {
   count = await CountModel.findOne()
-
-  if (count === null) {
+  if (!count) {
     await createCount()
   }
 }

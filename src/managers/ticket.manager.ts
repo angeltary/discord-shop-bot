@@ -1,7 +1,7 @@
 import { ChannelType, type TextChannel } from 'discord.js'
 import { client } from '../index'
 import { Ticket, TicketModel } from '../models/ticket.model'
-import { extractId } from '../utils/discord.util'
+import { extractId } from '../utils/discord.utils'
 import { incrementCount } from './count.manager'
 
 export let tickets = new Array<Ticket>()
@@ -21,7 +21,7 @@ export const loadTickets = async () => {
   // Remove tickets that are not in the database
   for (const ticket of tickets) {
     const ticketChannel = ticketChannels.get(ticket.channelId)
-    if (ticketChannel === undefined) {
+    if (!ticketChannel) {
       await TicketModel.deleteOne({ channelId: ticket.channelId })
       tickets = tickets.filter(
         (ticketEntry) => ticketEntry.channelId !== ticket.channelId
@@ -33,7 +33,7 @@ export const loadTickets = async () => {
   for (const channel of ticketChannels.values()) {
     const ticketChannel = channel as TextChannel
     const ticket = tickets.find((ticket) => ticket.channelId === ticketChannel.id)
-    if (ticket === undefined) {
+    if (!ticket) {
       const ticket = new TicketModel({
         userId: extractId(ticketChannel.topic!),
         channelId: ticketChannel.id
@@ -57,7 +57,7 @@ export const removeTicket = async (channelId: string) => {
   console.log('Removing ticket:', channelId)
 
   const ticket = tickets.find((ticket) => ticket.channelId === channelId)
-  if (ticket === undefined) {
+  if (!ticket) {
     console.log('Ticket not found in the database')
     return
   }

@@ -2,7 +2,7 @@ import { Client, Collection, Guild } from 'discord.js'
 import mongoose from 'mongoose'
 import { loadCount } from '../managers/count.manager'
 import { loadTickets } from '../managers/ticket.manager'
-import { load } from '../utils/load.util'
+import { load } from '../utils/load.utils'
 import Button from './Button'
 import { Command } from './Command'
 
@@ -15,12 +15,12 @@ export class Bot extends Client {
     super({ intents: 32767 })
   }
 
-  public async init(): Promise<void> {
+  public async init() {
     await this.initDiscord()
     await this.initDatabase()
   }
 
-  private async initDiscord(): Promise<void> {
+  private async initDiscord() {
     try {
       await this.login(process.env.TOKEN)
       console.log(`Logged in as ${this.user!.tag}`)
@@ -29,7 +29,7 @@ export class Bot extends Client {
     }
 
     const guildId = process.env.GUILD_ID
-    if (guildId === undefined) {
+    if (!guildId) {
       throw Error('GUILD_ID is not defined')
     }
 
@@ -38,9 +38,9 @@ export class Bot extends Client {
     load(this)
   }
 
-  private async initDatabase(): Promise<void> {
+  private async initDatabase() {
     const databaseUrl = process.env.DATABASE_URL
-    if (databaseUrl === undefined) {
+    if (!databaseUrl) {
       throw Error('DATABASE_URL is not defined')
     }
 
