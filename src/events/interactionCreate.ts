@@ -7,7 +7,7 @@ export default new Event('interactionCreate', async (interaction) => {
 
     if (!command) {
       return await interaction.reply({
-        content: 'Invalid command!',
+        content: 'Неверная команда!',
         ephemeral: true
       })
     }

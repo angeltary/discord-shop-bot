@@ -24,7 +24,7 @@ export default new SlashCommand(
 
     if (channel.id !== id) {
       return await interaction.reply({
-        content: 'You are not in the assortment channel.',
+        content: 'Это не канал с ассортиментом!',
         ephemeral: true
       })
     }

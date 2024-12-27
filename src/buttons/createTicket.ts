@@ -22,7 +22,7 @@ export default new Button('create-ticket', async (interaction) => {
   const ticketEntry = tickets.find((ticket) => ticket.userId === userId)
   if (ticketEntry !== undefined) {
     return await interaction.reply({
-      content: 'You already have a ticket opened!',
+      content: 'У тебя уже есть открытый тикет!',
       ephemeral: true
     })
   }
@@ -30,7 +30,7 @@ export default new Button('create-ticket', async (interaction) => {
   const cart = cartService.getCart(userId)
   if (!cart.length) {
     return await interaction.reply({
-      content: 'Your cart is empty!',
+      content: 'Твоя корзина пустая!',
       ephemeral: true
     })
   }
@@ -51,7 +51,7 @@ export default new Button('create-ticket', async (interaction) => {
   })
 
   interaction.reply({
-    content: `Ticket created: ${channel.toString()}`,
+    content: `Тикет создан: ${channel.toString()}`,
     ephemeral: true
   })
 

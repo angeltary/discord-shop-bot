@@ -12,7 +12,7 @@ export default new SlashCommand(
 
     if (channel.parentId !== process.env.TICKET_CATEGORY_ID) {
       return await interaction.reply({
-        content: 'This is not a ticket channel!',
+        content: 'Это не тикет!',
         ephemeral: true
       })
     }
