@@ -8,8 +8,8 @@ import { client } from '../index'
 import { count } from '../managers/count.manager'
 import { addTicket, tickets } from '../managers/ticket.manager'
 import { cartService } from '../services/cart.service'
-import { kitsService } from '../services/kits.service'
 import Button from '../structures/Button'
+import { getCartContent } from '../utils/cart.utils'
 import { actionRow } from '../utils/discord.utils'
 
 export default new Button('create-ticket', async (interaction) => {
@@ -27,8 +27,7 @@ export default new Button('create-ticket', async (interaction) => {
     })
   }
 
-  const cart = cartService.getCart(userId)
-  if (!cart.length) {
+  if (cartService.isEmpty(userId)) {
     return await interaction.reply({
       content: 'Твоя корзина пустая!',
       ephemeral: true
@@ -57,28 +56,18 @@ export default new Button('create-ticket', async (interaction) => {
 
   await addTicket({ userId, channelId: channel.id })
 
-  const button = new ButtonBuilder()
+  const close = new ButtonBuilder()
     .setCustomId('close-ticket')
-    .setLabel('Close Ticket')
+    .setLabel('Закрыть тикет')
     .setStyle(ButtonStyle.Danger)
-  const row = actionRow(button)
-
-  const counts = new Map<string, number>()
-  for (const kit of cart) {
-    counts.set(kit.id, (counts.get(kit.id) ?? 0) + 1)
-  }
-
-  const content = []
-  for (const [id, count] of counts.entries()) {
-    const kit = kitsService.getKitById(id)
-    if (!kit) {
-      continue
-    }
-    content.push(`${count}x ${kit.name} - ${kit.price} руб.`)
-  }
+  const update = new ButtonBuilder()
+    .setCustomId('update-cart')
+    .setLabel('Обновить корзину')
+    .setStyle(ButtonStyle.Secondary)
+  const row = actionRow(close, update)
 
   channel.send({
-    content: `Your cart:\n${content.join('\n')}`,
+    content: `Корзина:\n${getCartContent(userId).join('\n')}`,
     components: [row]
   })
 })

@@ -19,7 +19,7 @@ export default new SlashCommand(
     const channel: TextChannel = interaction.channel as TextChannel
     const button = new ButtonBuilder()
       .setCustomId('create-ticket')
-      .setLabel('Create Ticket')
+      .setLabel('Создать тикет')
       .setStyle(ButtonStyle.Primary)
     const row = actionRow(button)
 

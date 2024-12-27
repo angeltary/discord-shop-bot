@@ -15,8 +15,13 @@ export default new Button('no-close-ticket', async (interaction) => {
         actionRow(
           new ButtonBuilder()
             .setCustomId('close-ticket')
-            .setLabel('Close Ticket')
+            .setLabel('Закрыть тикет')
             .setStyle(ButtonStyle.Danger)
+            .setDisabled(false),
+          new ButtonBuilder()
+            .setCustomId('update-cart')
+            .setLabel('Обновить корзину')
+            .setStyle(ButtonStyle.Secondary)
             .setDisabled(false)
         )
       ]

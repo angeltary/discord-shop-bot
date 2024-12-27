@@ -34,7 +34,7 @@ class CartService {
     this.carts.delete(userId)
   }
 
-  public isCartEmpty(userId: string): boolean {
+  public isEmpty(userId: string): boolean {
     const cart = this.carts.get(userId)
     return !cart || cart.length === 0
   }

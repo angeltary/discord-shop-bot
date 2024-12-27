@@ -14,11 +14,11 @@ export default new Button('close-ticket', async (interaction) => {
 
   const yes = new ButtonBuilder()
     .setCustomId('yes-close-ticket')
-    .setLabel('Yes')
+    .setLabel('Да')
     .setStyle(ButtonStyle.Danger)
   const no = new ButtonBuilder()
     .setCustomId('no-close-ticket')
-    .setLabel('No')
+    .setLabel('Нет')
     .setStyle(ButtonStyle.Secondary)
   const row = actionRow(yes, no)
 
@@ -27,8 +27,13 @@ export default new Button('close-ticket', async (interaction) => {
       actionRow(
         new ButtonBuilder()
           .setCustomId('close-ticket')
-          .setLabel('Close Ticket')
+          .setLabel('Закрыть тикет')
           .setStyle(ButtonStyle.Danger)
+          .setDisabled(true),
+        new ButtonBuilder()
+          .setCustomId('update-cart')
+          .setLabel('Обновить корзину')
+          .setStyle(ButtonStyle.Secondary)
           .setDisabled(true)
       )
     ]
