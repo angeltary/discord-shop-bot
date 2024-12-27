@@ -1,10 +1,12 @@
 import { ButtonBuilder, ButtonStyle, TextChannel } from 'discord.js'
+import { cartService } from '../services/cart.service'
 import Button from '../structures/Button'
 import { getCartContent } from '../utils/cart.utils'
 import { actionRow } from '../utils/discord.utils'
 
 export default new Button('update-cart', async (interaction) => {
   const channel = interaction.channel as TextChannel
+  const userId = interaction.user.id
 
   const messages = await channel.messages.fetch()
   const message = messages.first()
@@ -27,13 +29,9 @@ export default new Button('update-cart', async (interaction) => {
     })
   }
 
-  let content = getCartContent(interaction.user.id).join('\n')
-  if (content === '') {
-    content = ' нет китов'
-  } else {
-    content = '\n' + content
-  }
-
+  const content = cartService.isEmpty(userId)
+    ? ' нет китов'
+    : '\n' + getCartContent(interaction.user.id).join('\n')
   await interaction.message.edit({
     content: `Корзина:${content}`
   })
