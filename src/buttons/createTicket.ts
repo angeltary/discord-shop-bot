@@ -25,7 +25,7 @@ export default new Button('create-ticket', async (interaction) => {
     })
   }
 
-  const category: CategoryChannel = (await client.guild!.channels.fetch(
+  const category = (await client.guild!.channels.fetch(
     categoryId
   )) as CategoryChannel
 

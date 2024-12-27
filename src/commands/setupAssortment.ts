@@ -1,14 +1,13 @@
-import { PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js'
-import { readFileSync } from 'fs'
-import { join } from 'path'
+import {
+  ButtonBuilder,
+  ButtonStyle,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  TextChannel
+} from 'discord.js'
+import { kitsService } from '../services/kits.service'
 import { SlashCommand } from '../structures/command/SlashCommand'
-import { removeReply } from '../utils/discord.utils'
-
-const getAssortment = () => {
-  const path = join(__dirname, '../../assortment.json')
-  const file = readFileSync(path, 'utf-8')
-  return JSON.parse(file)
-}
+import { actionRow, removeReply } from '../utils/discord.utils'
 
 export default new SlashCommand(
   new SlashCommandBuilder()
@@ -31,11 +30,21 @@ export default new SlashCommand(
     }
     await removeReply(interaction)
 
-    const kits = getAssortment()
-    for (const kit of kits) {
-      const message = await channel.send(`${kit.name} - ${kit.price} руб.`)
-      await message.react('🛒')
-      await message.react('🧑‍💻')
+    for (const kit of kitsService.getKits()) {
+      const add = new ButtonBuilder()
+        .setCustomId('add-to-cart')
+        .setLabel('Добавить')
+        .setStyle(ButtonStyle.Success)
+      const remove = new ButtonBuilder()
+        .setCustomId('remove-from-cart')
+        .setLabel('Удалить')
+        .setStyle(ButtonStyle.Danger)
+      const buttons = actionRow(add, remove)
+
+      await channel.send({
+        content: `${kit.name} - ${kit.price} руб.`,
+        components: [buttons]
+      })
     }
   }
 )

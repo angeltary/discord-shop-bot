@@ -4,7 +4,7 @@ import { Ticket, TicketModel } from '../models/ticket.model'
 import { extractId } from '../utils/discord.utils'
 import { incrementCount } from './count.manager'
 
-export let tickets = new Array<Ticket>()
+export let tickets: Ticket[] = []
 
 export const loadTickets = async () => {
   tickets = await TicketModel.find()
@@ -18,7 +18,7 @@ export const loadTickets = async () => {
     )
   })
 
-  // Remove tickets that are not in the database
+  // Remove tickets from database that are not in the server
   for (const ticket of tickets) {
     const ticketChannel = ticketChannels.get(ticket.channelId)
     if (!ticketChannel) {
@@ -29,7 +29,7 @@ export const loadTickets = async () => {
     }
   }
 
-  // Add tickets that are not in the database
+  // Add tickets to database that are not in the server
   for (const channel of ticketChannels.values()) {
     const ticketChannel = channel as TextChannel
     const ticket = tickets.find((ticket) => ticket.channelId === ticketChannel.id)
