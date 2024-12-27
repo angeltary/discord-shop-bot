@@ -22,6 +22,10 @@ class KitsService {
   public getKit(name: string) {
     return this.kits.find((kit) => name.includes(kit.name))
   }
+
+  public getKitById(id: string) {
+    return this.kits.find((kit) => kit.id === id)
+  }
 }
 
 export const kitsService = new KitsService()

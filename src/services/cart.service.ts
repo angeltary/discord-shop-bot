@@ -33,6 +33,15 @@ class CartService {
   public deleteCart(userId: string) {
     this.carts.delete(userId)
   }
+
+  public isCartEmpty(userId: string): boolean {
+    const cart = this.carts.get(userId)
+    return !cart || cart.length === 0
+  }
+
+  public getCart(userId: string): IKit[] {
+    return this.carts.get(userId) ?? []
+  }
 }
 
 export const cartService = new CartService()

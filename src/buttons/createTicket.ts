@@ -7,6 +7,8 @@ import {
 import { client } from '../index'
 import { count } from '../managers/count.manager'
 import { addTicket, tickets } from '../managers/ticket.manager'
+import { cartService } from '../services/cart.service'
+import { kitsService } from '../services/kits.service'
 import Button from '../structures/Button'
 import { actionRow } from '../utils/discord.utils'
 
@@ -21,6 +23,14 @@ export default new Button('create-ticket', async (interaction) => {
   if (ticketEntry !== undefined) {
     return await interaction.reply({
       content: 'You already have a ticket opened!',
+      ephemeral: true
+    })
+  }
+
+  const cart = cartService.getCart(userId)
+  if (!cart.length) {
+    return await interaction.reply({
+      content: 'Your cart is empty!',
       ephemeral: true
     })
   }
@@ -53,5 +63,22 @@ export default new Button('create-ticket', async (interaction) => {
     .setStyle(ButtonStyle.Danger)
   const row = actionRow(button)
 
-  channel.send({ components: [row] })
+  const counts = new Map<string, number>()
+  for (const kit of cart) {
+    counts.set(kit.id, (counts.get(kit.id) ?? 0) + 1)
+  }
+
+  const content = []
+  for (const [id, count] of counts.entries()) {
+    const kit = kitsService.getKitById(id)
+    if (!kit) {
+      continue
+    }
+    content.push(`${count}x ${kit.name} - ${kit.price} руб.`)
+  }
+
+  channel.send({
+    content: `Your cart:\n${content.join('\n')}`,
+    components: [row]
+  })
 })
